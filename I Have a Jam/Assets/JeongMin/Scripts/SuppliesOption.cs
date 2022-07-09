@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public enum OptionType
 {
@@ -23,10 +24,12 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     [SerializeField] private Text NameText;
     [SerializeField] private Text ExplanText;
+    [SerializeField] private GameObject anotherOption;
 
     private string tempChar = "";
     private bool isOneClick;
-
+    private bool isCanClick = false;
+    public static bool isGunPowder = false;
 
     private void Start()
     {
@@ -35,7 +38,13 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         {
             NameText.text = "";
             ExplanText.text = "";
+            isCanClick = false;
         };
+    }
+
+    private void OnEnable()
+    {
+        Invoke("CanClick", 2f);     
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -43,26 +52,34 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         if(ExplanText.text == tempChar && isOneClick)
         {
             Buff(Option);
-            Supplies.endSupplies.Invoke();
+            anotherOption.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InQuad);
+
+            transform.GetComponent<RectTransform>().DOAnchorPosX(0, 1.5f).SetEase(Ease.OutQuad).OnComplete(() => 
+            {
+                Supplies.endSupplies.Invoke();
+            });          
         }
         else
         {
             isOneClick = false;
         }
 
-        ExplanText.text = optionExplan[(int)Option];
-        isOneClick = true;
-        tempChar = ExplanText.text;
+        if (isCanClick)
+        {
+            ExplanText.text = optionExplan[(int)Option];
+            isOneClick = true;
+            tempChar = ExplanText.text;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        transform.localScale = Vector3.one * 0.95f;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        
+        transform.localScale = Vector3.one;
     }
 
     void Buff(OptionType supplies)
@@ -70,17 +87,23 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         switch (supplies)
         {
             case OptionType.BulletCountUP:
-                print("1"); break;
+                
+                break;
             case OptionType.BulletDmgUP: 
-                print("2"); break;
+                
+                break;
             case OptionType.Food: 
-                print("3"); break;
+                
+                break;
             case OptionType.Grenade: 
-                print("4"); break;
-            case OptionType.GunPowder: 
-                print("5"); break;
+                
+                break;
+            case OptionType.GunPowder:
+                isGunPowder = true;
+                break;
             case OptionType.Syringe: 
-                print("6"); break;
+                
+                break;
         } 
     }
 
@@ -103,5 +126,9 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         optionExplan[3] = "최대체력을 10 상승시킨다.";
         optionExplan[4] = "첫발로 폭발을 일으키는 수류탄을 발사한다.";
         optionExplan[5] = "적이 사망할 때 주변에 폭발을 일으킨다.";
+    }
+    void CanClick()
+    {
+        isCanClick = true;
     }
 }
