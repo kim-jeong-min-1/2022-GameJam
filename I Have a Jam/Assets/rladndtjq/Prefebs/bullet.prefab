@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -7165674014884174209}
   - component: {fileID: 1046761904253808111}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,10 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 800
-  NormalDamage: 10
   GranadeDamage: 30
   boundAmount: 35
+  GranadeEffect: {fileID: 1671068928050057880, guid: 61a2738331e69324fbe6a24f38c82bfc, type: 3}
+  HitEffect: {fileID: 2231892959730327704, guid: d48b1dfa559379d40a2257a6a8ad1db2, type: 3}
   bulletType: 0
+  NormalDamage: 10
 --- !u!212 &6146376145802388833
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +93,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: 98aa8ab95f8b9aa4580b5867ef046714, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 456d21ddb47a3cb4088e18d659eec4f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

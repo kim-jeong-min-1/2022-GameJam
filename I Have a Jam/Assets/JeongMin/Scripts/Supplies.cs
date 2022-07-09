@@ -25,7 +25,6 @@ public class Supplies : MonoBehaviour
     public void StartSupplies()
     {
         StartSetting();
-        SuppliesObj.SetActive(true);
         anim.SetBool("isEnd", false);
     }
     public void EndSupplies()

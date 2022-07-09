@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [HideInInspector]
     public bool isShootEnd = false;
+    public bool isSelect = false;
+    private bool isBreakSupplies = true;
     bool cyclePlay = false;
+
+    [SerializeField] private Text TurnText;
+    [SerializeField] private GameObject Supplies;
+    public int turn = 1;
     void Start()
     {
         if (instance == null)
@@ -27,13 +34,13 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine(turnCycle());
-        cyclePlay = true;
+        cyclePlay = true;   
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isShootEnd && cyclePlay == false)
+        if (isShootEnd && cyclePlay == false && !isSelect)
         {
             StartCoroutine(turnCycle());
             cyclePlay = true;
@@ -43,6 +50,7 @@ public class GameManager : MonoBehaviour
     IEnumerator turnCycle()
     {
         yield return new WaitForSeconds(0.3f);
+
         for (int y = 9; y > -1; y--)
         {
             for (int x = 5; x > -1; x--)
@@ -55,7 +63,7 @@ public class GameManager : MonoBehaviour
                     }
                     else // 좀비 한칸 내려가기
                     {
-                        objectInTile[tile[y, x]].transform.DOMove(new Vector3(objectInTile[tile[y, x]].transform.position.x, objectInTile[tile[y, x]].transform.position.y - 0.876f, 0), 0.8f).SetEase(Ease.InOutQuad);
+                        objectInTile[tile[y, x]].transform.DOMove(new Vector3(objectInTile[tile[y, x]].transform.position.x, objectInTile[tile[y, x]].transform.position.y - 0.850f, 0), 0.8f).SetEase(Ease.InOutQuad);
                         objectInTile[tile[y + 1, x]] = objectInTile[tile[y, x]];
                         objectInTile[tile[y, x]] = null;
                     }
@@ -127,9 +135,20 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1f);
+
+        if (turn % 5 == 0 && isBreakSupplies)
+        {
+            isSelect = true;
+            Supplies.SetActive(true);
+            Supplies.GetComponent<Supplies>().StartSupplies();
+            isBreakSupplies = false;
+        }
+
+
         Arrow.Instance.canShoot = true;
         isShootEnd = false;
         cyclePlay = false;
+        TurnText.text = $"{turn++}";
     }
 }

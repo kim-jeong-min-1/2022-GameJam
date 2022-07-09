@@ -36,6 +36,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         TextSetting();
         Supplies.endSupplies += () =>
         {
+            GameManager.instance.isSelect = false;
             NameText.text = "";
             ExplanText.text = "";
             isCanClick = false;
@@ -57,7 +58,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
             transform.GetComponent<RectTransform>().DOAnchorPosX(0, 1.5f).SetEase(Ease.OutQuad).OnComplete(() => 
             {
                 Supplies.endSupplies.Invoke();
-            });          
+            });
         }
         else
         {
@@ -87,22 +88,26 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         switch (supplies)
         {
             case OptionType.BulletCountUP:
-                
+                Arrow.Instance.shootAmount += 5;
                 break;
-            case OptionType.BulletDmgUP: 
-                
+            case OptionType.BulletDmgUP:
+                Arrow.Instance.BulletDmg += 10;
                 break;
-            case OptionType.Food: 
-                
+            case OptionType.Food:
+                Arrow.Instance.currentHp += 50;
+                if(Arrow.Instance.currentHp > Arrow.Instance.Hp)
+                {
+                    Arrow.Instance.currentHp = Arrow.Instance.Hp;
+                }
                 break;
-            case OptionType.Grenade: 
-                
+            case OptionType.Grenade:
+                Arrow.Instance.granadeBulletAmount++;
                 break;
             case OptionType.GunPowder:
                 isGunPowder = true;
                 break;
-            case OptionType.Syringe: 
-                
+            case OptionType.Syringe:
+                Arrow.Instance.Hp += 10;
                 break;
         } 
     }

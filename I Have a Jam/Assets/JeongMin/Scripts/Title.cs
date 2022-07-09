@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -14,6 +15,14 @@ public class Title : MonoBehaviour
     {
         TouchTextFade();
         LogoMove();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            SceneManager.LoadScene("InGame");
+        }
     }
 
     void LogoMove()
@@ -44,7 +53,7 @@ public class Title : MonoBehaviour
         while (TouchText.color.a < 1)
         {
             float Fade = TouchText.color.a + 0.01f;
-            TouchText.color = new Color(0, 0, 0, Fade);
+            TouchText.color = new Color(1, 1, 1, Fade);
             yield return new WaitForSeconds(0.01f);
         }
         StartCoroutine(FadeOutText());
@@ -54,7 +63,7 @@ public class Title : MonoBehaviour
         while (TouchText.color.a > 0)
         {
             float Fade = TouchText.color.a - 0.01f;
-            TouchText.color = new Color(0, 0, 0, Fade);
+            TouchText.color = new Color(1, 1, 1, Fade);
             yield return new WaitForSeconds(0.01f);
         }
         StartCoroutine(FadeInText());

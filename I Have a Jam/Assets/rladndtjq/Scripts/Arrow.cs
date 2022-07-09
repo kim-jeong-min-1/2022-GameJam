@@ -13,10 +13,11 @@ public class Arrow : MonoBehaviour
     [SerializeField] Vector2 Offset;
     public static Arrow Instance { get; private set; }
 
+    public float BulletDmg = 10;
     public int granadeBulletAmount;
-    [SerializeField] int Hp;
+    public int Hp;
     [HideInInspector] public float currentHp;
-    [SerializeField] int shootAmount;
+     public int shootAmount;
     [HideInInspector] public int shootBack = 0;
     [HideInInspector] public bool canShoot = false;
     [HideInInspector] public int shootCount = 0;
@@ -60,7 +61,7 @@ public class Arrow : MonoBehaviour
 
         if(canShoot)
         {
-            if(Input.GetMouseButton(0))
+            if(Input.GetMouseButton(0) && GameManager.instance.isSelect == false)
             {
                 spriteRenderer.enabled = true;
                 lineRenderer.enabled = true;
@@ -70,7 +71,7 @@ public class Arrow : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, Mathf.Clamp(dir, 20, 160));
             }
 
-            if(Input.GetMouseButtonUp(0))
+            if(Input.GetMouseButtonUp(0) && GameManager.instance.isSelect == false)
             {
                 spawnPosition = transform.position;
                 StartCoroutine(Shoot());
@@ -87,8 +88,11 @@ public class Arrow : MonoBehaviour
         for(int i = 0; i < shootAmount; i++)
         {
             var bullet = ObjectPool.GetObject(ObjectPool.instance.prefebs[0].gameObject, null);
+            bullet.GetComponent<Bullet>().NormalDamage = BulletDmg;
+
             if(shootCount < granadeBulletAmount)
                 bullet.GetComponent<Bullet>().bulletType = (int)BulletType.Granade;   
+
             bullet.transform.position = new Vector3(spawnPosition.x,spawnPosition.y + 0.5f, 0);
             shootCount++;
             

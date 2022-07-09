@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     TextMesh hptext;
     void Start()
     {
-        currentHp = Hp;
+        currentHp = Hp + (Hp * ((int)(GameManager.instance.turn / 5) + 1));
         hptext = transform.Find("Hp").GetComponent<TextMesh>();
     }
 

@@ -6,14 +6,17 @@ using DG.Tweening;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float Speed;
-    [SerializeField] float NormalDamage;
     [SerializeField] float GranadeDamage;
     [SerializeField] int boundAmount;
+    [SerializeField] GameObject GranadeEffect;
+    [SerializeField] GameObject HitEffect;
+
     [HideInInspector] public int bulletType;
 
     Rigidbody2D rb;
     GameObject Player;
     Arrow Arrow;
+    public float NormalDamage;
     bool canShoot = true;
     bool isGranadeBomb = false;
     float bound;
@@ -66,10 +69,12 @@ public class Bullet : MonoBehaviour
             bound--;
             if ((bulletType == (int)BulletType.Granade))
             {
+                Instantiate(GranadeEffect, transform.position, Quaternion.identity);
                 isGranadeBomb = true;
             }
             else
             {
+                Instantiate(HitEffect, collision.transform.position, Quaternion.identity);
                 collision.collider.GetComponent<Enemy>().currentHp -= NormalDamage;
             }
         }

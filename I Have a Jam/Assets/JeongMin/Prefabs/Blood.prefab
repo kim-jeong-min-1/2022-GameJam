@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4006618312467524869}
+  - component: {fileID: 3136149434051564138}
   - component: {fileID: 4775891445543466478}
   - component: {fileID: 3206503278131548849}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Blood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,6 +34,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3136149434051564138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3017234813595156318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e291dc9332c4ef548bca0ddc36f0892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &4775891445543466478
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4741,7 +4754,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -4778,7 +4791,7 @@ GameObject:
   - component: {fileID: 5516911242931683122}
   - component: {fileID: 3959339682228225907}
   - component: {fileID: 7242517912029991078}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: blood_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9507,7 +9520,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
