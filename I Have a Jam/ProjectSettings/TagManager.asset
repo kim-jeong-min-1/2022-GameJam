@@ -9,6 +9,9 @@ TagManager:
   - bulletDisable
   - Wall
   - Enemy
+  - Box
+  - bullet
+  - heal
   layers:
   - Default
   - TransparentFX
@@ -22,8 +25,8 @@ TagManager:
   - EnemyBullet
   - Player
   - Particle
-  - 
-  - 
+  - Box
+  - Item
   - 
   - 
   - 

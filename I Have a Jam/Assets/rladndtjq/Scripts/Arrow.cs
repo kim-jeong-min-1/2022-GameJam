@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 enum BulletType
 {
@@ -11,17 +12,19 @@ enum BulletType
 public class Arrow : MonoBehaviour
 {
     [SerializeField] Vector2 Offset;
+    [SerializeField] Slider HpBar;
+    [SerializeField] GameObject Die;
     public static Arrow Instance { get; private set; }
 
     public float BulletDmg = 10;
     public int granadeBulletAmount;
     public int Hp;
     [HideInInspector] public float currentHp;
-     public int shootAmount;
+    public int shootAmount;
     [HideInInspector] public int shootBack = 0;
     [HideInInspector] public bool canShoot = false;
     [HideInInspector] public int shootCount = 0;
-    [SerializeField] TextMesh hpText;
+    [SerializeField] Text hpText;
 
     LineRenderer lineRenderer;
     GameObject circle;
@@ -42,6 +45,8 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HpBar.value = currentHp / Hp;
+        hpText.text = $"{currentHp}";
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, Mathf.Infinity, LayerMask.GetMask("Wall") | LayerMask.GetMask("Enemy"));
         Debug.DrawLine(transform.position, hit.point, Color.red);
         lineRenderer.SetPosition(0, transform.position);
@@ -58,9 +63,18 @@ public class Arrow : MonoBehaviour
             Debug.Log("shootEnd");
         }
         
+        if(currentHp <= 0)
+        {
+            Die.SetActive(true);
+            gameObject.transform.parent.gameObject.SetActive(false);
+        }
 
         if(canShoot)
         {
+            if(Input.GetMouseButtonDown(0) && GameManager.instance.isSelect == false)
+            {
+                SoundManager.Instance.PlaySound(SoundEffect.Load);
+            }
             if(Input.GetMouseButton(0) && GameManager.instance.isSelect == false)
             {
                 spriteRenderer.enabled = true;
@@ -87,6 +101,7 @@ public class Arrow : MonoBehaviour
     {
         for(int i = 0; i < shootAmount; i++)
         {
+            SoundManager.Instance.PlaySound(SoundEffect.Shot, 0.5f);
             var bullet = ObjectPool.GetObject(ObjectPool.instance.prefebs[0].gameObject, null);
             bullet.GetComponent<Bullet>().NormalDamage = BulletDmg;
 

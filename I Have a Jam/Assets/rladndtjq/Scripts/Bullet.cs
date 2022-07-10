@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
     {
         if (isGranadeBomb == true)
         {
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 2.0f, Vector2.up,Mathf.Infinity,LayerMask.GetMask("Enemy"));
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 1.0f, Vector2.up,Mathf.Infinity,LayerMask.GetMask("Enemy"));
 
             foreach (RaycastHit2D hit2 in hit)
             {
@@ -67,8 +67,10 @@ public class Bullet : MonoBehaviour
         if (collision.collider.CompareTag("Enemy"))
         {
             bound--;
+            collision.gameObject.GetComponent<Enemy>().Hit();
             if ((bulletType == (int)BulletType.Granade))
             {
+                SoundManager.Instance.PlaySound(SoundEffect.Boom);
                 Instantiate(GranadeEffect, transform.position, Quaternion.identity);
                 isGranadeBomb = true;
             }

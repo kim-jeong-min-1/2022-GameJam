@@ -47,6 +47,7 @@ public class Supplies : MonoBehaviour
 
             for (int i = 0; i < Option.Count; i++)
             {
+                SoundManager.Instance.PlaySound(SoundEffect.Random);
                 int rand = Random.Range(1, 101);
                 Option[i].transform.GetChild(0).GetComponent
                     <Image>().sprite = SuppliesDatas[GetOption(rand)];

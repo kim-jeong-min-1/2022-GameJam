@@ -13,6 +13,7 @@ public class Title : MonoBehaviour
 
     void Start()
     {
+        SoundManager.Instance.PlayBGM();
         TouchTextFade();
         LogoMove();
     }
@@ -22,6 +23,7 @@ public class Title : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             SceneManager.LoadScene("InGame");
+            SoundManager.Instance.PlaySound(SoundEffect.Click);
         }
     }
 
