@@ -22,9 +22,9 @@ public class Arrow : MonoBehaviour
     public int Hp;
     [HideInInspector] public float currentHp;
     public int shootAmount;
-    public int shootBack = 0;
+    [HideInInspector] public int shootBack = 0;
     [HideInInspector] public bool canShoot = false;
-    public int shootCount = 0;
+    [HideInInspector] public int shootCount = 0;
     [SerializeField] Text hpText;
 
     LineRenderer lineRenderer;
@@ -68,7 +68,6 @@ public class Arrow : MonoBehaviour
         {
             HighScore.Save(GameManager.instance.Score);
             Die.SetActive(true);
-            GameManager.instance.isBreakSupplies = false;
             gameObject.transform.parent.gameObject.SetActive(false);
         }
 

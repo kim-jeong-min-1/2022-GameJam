@@ -155,7 +155,6 @@ public class GameManager : MonoBehaviour
                 {
                     var Box = Instantiate(box);
                     Box.transform.position = tile[0, i];
-                    objectInTile[tile[0, i]] = Box;
                     break;
                 }
             }
