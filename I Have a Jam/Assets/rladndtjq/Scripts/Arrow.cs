@@ -21,9 +21,9 @@ public class Arrow : MonoBehaviour
     public int Hp;
     [HideInInspector] public float currentHp;
     public int shootAmount;
-    [HideInInspector] public int shootBack = 0;
+    public int shootBack = 0;
     [HideInInspector] public bool canShoot = false;
-    [HideInInspector] public int shootCount = 0;
+    public int shootCount = 0;
     [SerializeField] Text hpText;
 
     LineRenderer lineRenderer;
@@ -66,6 +66,7 @@ public class Arrow : MonoBehaviour
         if(currentHp <= 0)
         {
             Die.SetActive(true);
+            GameManager.instance.isBreakSupplies = false;
             gameObject.transform.parent.gameObject.SetActive(false);
         }
 

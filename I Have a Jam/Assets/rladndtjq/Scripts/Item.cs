@@ -20,7 +20,8 @@ public class Item : MonoBehaviour
             if(item == 1)
             {
                 Arrow.Instance.shootAmount++;
-                Arrow.Instance.shootBack++;
+                Arrow.Instance.shootCount++;
+                
             }
             else
             {
