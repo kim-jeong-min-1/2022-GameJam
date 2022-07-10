@@ -104,7 +104,6 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
                 Arrow.Instance.granadeBulletAmount++;
                 break;
             case OptionType.GunPowder:
-                Arrow.Instance.isFireBullet = true;
                 isGunPowder = true;
                 break;
             case OptionType.Syringe:

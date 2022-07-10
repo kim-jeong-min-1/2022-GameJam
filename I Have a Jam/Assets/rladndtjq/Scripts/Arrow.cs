@@ -18,7 +18,6 @@ public class Arrow : MonoBehaviour
 
     public float BulletDmg = 10;
     public int granadeBulletAmount;
-    public bool isFireBullet = false;
     public int Hp;
     [HideInInspector] public float currentHp;
     public int shootAmount;
@@ -66,7 +65,6 @@ public class Arrow : MonoBehaviour
         
         if(currentHp <= 0)
         {
-            HighScore.Save(GameManager.instance.Score);
             Die.SetActive(true);
             gameObject.transform.parent.gameObject.SetActive(false);
         }

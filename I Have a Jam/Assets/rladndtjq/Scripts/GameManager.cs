@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
-    public Dictionary<Vector2, GameObject> objectInTile = new Dictionary<Vector2, GameObject>();
-    public Vector2[,] tile = new Vector2[11, 8];
+    Dictionary<Vector2, GameObject> objectInTile = new Dictionary<Vector2, GameObject>();
+    Vector2[,] tile = new Vector2[11, 8];
     public static GameManager instance;
     [HideInInspector]
     public bool isShootEnd = false;
@@ -20,18 +20,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text TurnText;
     [SerializeField] private GameObject Supplies;
     [SerializeField] GameObject canvas;
-    [SerializeField] GameObject fireparticle;
-    [SerializeField] Text ScoreText;
 
     public bool sound;
     public bool music;
     public bool restart;
-    public int Score = 0;
 
     public int turn = 1;
     void Start()
     {
-
         SoundManager.Instance.PlayBGM();
         if (instance == null)
             instance = this;
@@ -54,7 +50,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ScoreText.text = Score.ToString();
         if (isShootEnd && cyclePlay == false && !isSelect)
         {
             StartCoroutine(turnCycle());
