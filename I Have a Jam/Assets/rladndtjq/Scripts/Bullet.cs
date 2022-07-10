@@ -68,6 +68,11 @@ public class Bullet : MonoBehaviour
         {
             bound--;
             collision.gameObject.GetComponent<Enemy>().Hit();
+            if (Arrow.Instance.isFireBullet)
+            {
+                collision.gameObject.GetComponent<Enemy>().isFire = true;
+            }
+
             if ((bulletType == (int)BulletType.Granade))
             {
                 SoundManager.Instance.PlaySound(SoundEffect.Boom);
