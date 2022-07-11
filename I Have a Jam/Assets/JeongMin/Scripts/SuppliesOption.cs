@@ -27,7 +27,8 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
     [SerializeField] private Text ExplanText;
     [SerializeField] private GameObject anotherOption;
 
-    private bool isOneClick;
+    [HideInInspector]
+    public bool isOneclick = false;
     private bool isCanClick = false;
     public static bool isGunPowder = false;
 
@@ -50,7 +51,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (Option != OptionType.nonCheck && isOneClick)
+        if (Option != OptionType.nonCheck && isOneclick)
         {
             Buff(Option);
             anotherOption.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InQuad);
@@ -61,13 +62,12 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
             });
 
             Option = OptionType.nonCheck;
-            isOneClick = false;
         }
 
         if (isCanClick)
         {
             ExplanText.text = optionExplan[(int)Option];
-            isOneClick = true;
+            isOneclick = true;
         }
     }
 
@@ -89,7 +89,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
                 Arrow.Instance.shootAmount += 3;
                 break;
             case OptionType.BulletDmgUP:
-                Arrow.Instance.BulletDmg += 10;
+                Arrow.Instance.BulletDmg += 5;
                 break;
             case OptionType.Food:
                 Arrow.Instance.currentHp += 50;
@@ -106,7 +106,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
                 isGunPowder = true;
                 break;
             case OptionType.Syringe:
-                Arrow.Instance.Hp += 10;
+                Arrow.Instance.Hp += 20;
                 break;
         } 
     }
@@ -125,9 +125,9 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         optionNameList[5] = "화약탄";
 
         optionExplan[0] = "발사하는 탄환의 수를 3 높인다.";
-        optionExplan[1] = "탄환의 데미지를 10 상승시킨다.";
+        optionExplan[1] = "탄환의 데미지를 5 상승시킨다.";
         optionExplan[2] = "체력을 50 회복한다.";
-        optionExplan[3] = "최대체력을 10 상승시킨다.";
+        optionExplan[3] = "최대체력을 20 상승시킨다.";
         optionExplan[4] = "첫발로 폭발을 일으키는 수류탄을 발사한다.";
         optionExplan[5] = "적이 사망할 때 주변에 폭발을 일으킨다.";
     }

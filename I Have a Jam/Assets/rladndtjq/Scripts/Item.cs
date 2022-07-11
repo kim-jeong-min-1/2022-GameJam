@@ -21,7 +21,7 @@ public class Item : MonoBehaviour
             {
                 Arrow.Instance.shootAmount++;
                 Arrow.Instance.shootCount++;
-                if (Arrow.Instance.shootCount == Arrow.Instance.shootAmount)
+                if (Arrow.Instance.shootCount >= Arrow.Instance.shootAmount)
                 {
                     Arrow.Instance.shootBack++;
                 }

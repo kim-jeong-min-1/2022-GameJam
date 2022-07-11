@@ -21,6 +21,7 @@ public class Die : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene("Title");
         }
     }

@@ -9,4 +9,12 @@ public class EffectDestroy : MonoBehaviour
     {
         Destroy(gameObject, 1.5f);
     }
+
+    private void Update()
+    {
+        if(Arrow.Instance.currentHp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }

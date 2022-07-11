@@ -10,12 +10,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] int boundAmount;
     [SerializeField] GameObject GranadeEffect;
     [SerializeField] GameObject HitEffect;
-
+    [HideInInspector] public bool fireBullet = false;
     public int bulletType;
 
     Rigidbody2D rb;
     GameObject Player;
-    Arrow Arrow;
     public float NormalDamage;
     bool canShoot = true;
     bool isGranadeBomb = false;
@@ -31,7 +30,7 @@ public class Bullet : MonoBehaviour
     {
         if (isGranadeBomb == true)
         {
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 1.0f, Vector2.up,Mathf.Infinity,LayerMask.GetMask("Enemy"));
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 1.0f, Vector2.zero ,Mathf.Infinity,LayerMask.GetMask("Enemy"));
 
             foreach (RaycastHit2D hit2 in hit)
             {
@@ -71,6 +70,11 @@ public class Bullet : MonoBehaviour
             if (Arrow.Instance.isFireBullet)
             {
                 collision.gameObject.GetComponent<Enemy>().isFire = true;
+            }
+
+            if(fireBullet == true)
+            {
+                collision.collider.GetComponent<Enemy>().isFire = true;
             }
 
             if ((bulletType == (int)BulletType.Granade))

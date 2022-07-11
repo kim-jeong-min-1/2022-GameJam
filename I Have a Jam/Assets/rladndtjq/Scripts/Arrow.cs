@@ -7,7 +7,6 @@ enum BulletType
 {
     Normal,
     Granade,
-    Plague
 }
 public class Arrow : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class Arrow : MonoBehaviour
     public float BulletDmg = 10;
     public int granadeBulletAmount;
     public bool isFireBullet = false;
+    bool isSoundPlayd = false;
     public int Hp;
     [HideInInspector] public float currentHp;
     public int shootAmount;
@@ -56,7 +56,7 @@ public class Arrow : MonoBehaviour
         circle.transform.position = hit.point;
 
         hpText.text = currentHp.ToString();
-        if(shootBack == shootAmount)
+        if(shootBack >= shootAmount)
         {
             GameManager.instance.isShootEnd = true;
             shootBack = 0;
@@ -69,17 +69,19 @@ public class Arrow : MonoBehaviour
             HighScore.Save(GameManager.instance.Score);
             Die.SetActive(true);
             GameManager.instance.isBreakSupplies = false;
+            Time.timeScale = 0f;
             gameObject.transform.parent.gameObject.SetActive(false);
         }
 
         if(canShoot)
         {
-            if(Input.GetMouseButtonDown(0) && GameManager.instance.isSelect == false)
-            {
-                SoundManager.Instance.PlaySound(SoundEffect.Load);
-            }
             if(Input.GetMouseButton(0) && GameManager.instance.isSelect == false)
             {
+                if (isSoundPlayd == false)
+                {
+                    SoundManager.Instance.PlaySound(SoundEffect.Load);
+                    isSoundPlayd = true;
+                }
                 spriteRenderer.enabled = true;
                 lineRenderer.enabled = true;
                 circle.GetComponent<SpriteRenderer>().enabled = true;
@@ -91,11 +93,14 @@ public class Arrow : MonoBehaviour
             if(Input.GetMouseButtonUp(0) && GameManager.instance.isSelect == false)
             {
                 spawnPosition = transform.position;
+                shootBack = 0;
+                shootCount = 0;
                 StartCoroutine(Shoot());
                 spriteRenderer.enabled = false;
                 lineRenderer.enabled = false;
                 circle.GetComponent<SpriteRenderer>().enabled = false;
-                canShoot = false; 
+                canShoot = false;
+                isSoundPlayd = false;
             }
         }
     }

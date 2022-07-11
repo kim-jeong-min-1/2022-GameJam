@@ -29,6 +29,10 @@ public class Supplies : MonoBehaviour
     }
     public void EndSupplies()
     {
+        for (int i = 0; i < Option.Count; i++)
+        {
+            Option[i].GetComponent<SuppliesOption>().isOneclick = false;
+        }
         SuppliesObj.SetActive(false);
     }
 

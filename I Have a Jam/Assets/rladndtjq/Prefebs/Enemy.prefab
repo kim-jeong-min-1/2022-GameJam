@@ -151,6 +151,8 @@ MonoBehaviour:
   currentHp: 0
   Enemytype: 0
   EnemyBullet: {fileID: 6146376145802388835, guid: 3de9c08531920154ba72066635d7788e, type: 3}
+  bloodParticle: {fileID: 3017234813595156318, guid: 21f8b26fd61155e42be32ddbac5fd568, type: 3}
+  FireEffect: {fileID: 3073161294533124537, guid: 13a9c37ebbe78cd4f865b1e8388b7978, type: 3}
   isFire: 0
 --- !u!95 &3994052293397922510
 Animator:

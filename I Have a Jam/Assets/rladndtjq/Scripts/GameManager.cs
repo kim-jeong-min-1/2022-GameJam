@@ -72,14 +72,13 @@ public class GameManager : MonoBehaviour
         {
             if (objectInTile[x + 48] != null)
             {
-                if (objectInTile[x + 48].activeSelf) //좀비 죽었을때
+                if (objectInTile[x + 48].activeSelf)
                 {
                     isWait = objectInTile[x + 48].TryGetComponent(out Enemy enemy);
                     if (isWait)
                     {
                         enemy.StopCoroutine(enemy.Attack());
                         enemy.StartCoroutine(enemy.Attack());
-                        Arrow.Instance.currentHp -= 10;
                     }
                 }
             }
@@ -91,12 +90,40 @@ public class GameManager : MonoBehaviour
             isWait = false;
         }
 
+        Debug.Log("for start");
         for (int xy = 53; xy > -1; xy--)
         {
             if (objectInTile[xy] != null)
             {
-                if (!objectInTile[xy].activeSelf) //좀비 죽었을때
+                Debug.Log(xy + " is not empty");
+                if (objectInTile[xy].activeSelf == false) //죽었을때
                 {
+                    Debug.Log(xy + " is dead");
+                    if (objectInTile[xy].TryGetComponent(out Enemy enemy) && enemy.isFire == true)
+                    {
+                        Debug.Log(xy + "is enemy");
+                        if (xy <= 47 && objectInTile[xy + 6].TryGetComponent(out Enemy enemyPY))
+                        {
+                            enemyPY.currentHp -= 10;
+                            Debug.Log(xy + 6 + "'s hp - 10");
+                        }
+                        if (xy >= 6 && objectInTile[xy - 6].TryGetComponent(out Enemy enemyMY))
+                        {
+                            enemyMY.currentHp -= 10;
+                            Debug.Log(xy - 6 + "'s hp - 10");
+                        }
+                        if ((int)Mathf.FloorToInt(xy / 6) != (int)Mathf.FloorToInt((xy + 1) / 6) && objectInTile[xy + 1].TryGetComponent(out Enemy enemyPX))
+                        {
+                            enemyPX.currentHp -= 10;
+                            Debug.Log(xy + 1 + "'s hp - 10");
+                        }
+                        if ((int)Mathf.FloorToInt(xy / 6) != (int)Mathf.FloorToInt((xy - 1) / 6) && objectInTile[xy - 1].TryGetComponent(out Enemy enemyMX))
+                        {
+                            enemyMX.currentHp -= 10;
+                            Debug.Log(xy - 1 + "'s hp - 10");
+                        }
+                        enemy.isFire = false;
+                    }
                     objectInTile[xy] = null;
                     isWait = true;
                 }
@@ -183,7 +210,7 @@ public class GameManager : MonoBehaviour
             Box.transform.DOMove(tilePos[spawnPosX], 1.0f).SetEase(Ease.OutBounce);
             objectInTile[spawnPosX] = Box;
         }
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.5f);
 
 
         for (int y = 8; y > 0; y--)
@@ -198,6 +225,7 @@ public class GameManager : MonoBehaviour
                         {
                             objectInTile[y * 6 + x].GetComponent<Enemy>().Shoot();
                             SoundManager.Instance.PlaySound(SoundEffect.Wow);
+                            isWait = true;
                         }
                         else if (enemy.Enemytype == (int)EnemyType.Miner)
                         {
@@ -213,9 +241,9 @@ public class GameManager : MonoBehaviour
                             enemy.GetComponent<SortingGroup>().sortingOrder = posY + 3;
                             enemy.transform.Find("Hp").GetComponent<SortingGroup>().sortingOrder = posY + 5;
                             SoundManager.Instance.PlaySound(SoundEffect.Mining);
+                            isWait = true;
                         }
                     }
-                    isWait = true;
                 }
             }
 

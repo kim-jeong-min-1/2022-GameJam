@@ -1125,6 +1125,7 @@ MonoBehaviour:
   NameText: {fileID: 810767257}
   ExplanText: {fileID: 1365670642}
   anotherOption: {fileID: 1119529035}
+  isOneclick: 0
 --- !u!114 &508057047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1213,7 +1214,7 @@ MonoBehaviour:
   HpBar: {fileID: 1828012225}
   Die: {fileID: 1133078249}
   BulletDmg: 10
-  granadeBulletAmount: 2
+  granadeBulletAmount: 0
   isFireBullet: 1
   Hp: 300
   currentHp: 0
@@ -2430,6 +2431,7 @@ MonoBehaviour:
   NameText: {fileID: 1377265933}
   ExplanText: {fileID: 1365670642}
   anotherOption: {fileID: 508057043}
+  isOneclick: 0
 --- !u!114 &1119529039
 MonoBehaviour:
   m_ObjectHideFlags: 0
