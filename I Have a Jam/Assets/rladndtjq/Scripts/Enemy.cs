@@ -49,14 +49,10 @@ public class Enemy : MonoBehaviour
         bullet.transform.DOMove(Arrow.Instance.transform.position, 1);
     }
 
-    public void Attack()
+    public IEnumerator Attack()
     {
         animator.SetTrigger("attack");
-        Invoke("attack",1.25f);
-    }
-
-    private void attack()
-    {
+        yield return new WaitForSeconds(0.5f);
         currentHp = 0;
     }
 

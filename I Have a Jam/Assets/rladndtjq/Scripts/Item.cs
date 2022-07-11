@@ -14,25 +14,29 @@ public class Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if(collision.CompareTag("bullet"))
+
+        if (collision.CompareTag("bullet"))
         {
-            if(item == 1)
+            if (item == 1)
             {
                 Arrow.Instance.shootAmount++;
                 Arrow.Instance.shootCount++;
-                
+                if (Arrow.Instance.shootCount == Arrow.Instance.shootAmount)
+                {
+                    Arrow.Instance.shootBack++;
+                }
+
             }
             else
             {
                 Arrow.Instance.currentHp += 20;
-                if(Arrow.Instance.currentHp > Arrow.Instance.Hp)
+                if (Arrow.Instance.currentHp > Arrow.Instance.Hp)
                 {
                     Arrow.Instance.currentHp = Arrow.Instance.Hp;
                 }
             }
 
-            Destroy(this.gameObject);
+            ObjectPool.ReturnObject(this.gameObject);
         }
     }
 }

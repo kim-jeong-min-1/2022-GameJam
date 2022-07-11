@@ -12,21 +12,21 @@ public enum OptionType
     Food,
     Syringe,
     Grenade,
-    GunPowder
+    GunPowder,
+    nonCheck
 }
 
 public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public OptionType Option;
+    public OptionType Option = OptionType.nonCheck;
 
-    private string[] optionNameList = new string[6];
-    private string[] optionExplan = new string[6];
+    private string[] optionNameList = new string[7];
+    private string[] optionExplan = new string[7];
 
     [SerializeField] private Text NameText;
     [SerializeField] private Text ExplanText;
     [SerializeField] private GameObject anotherOption;
 
-    private string tempChar = "";
     private bool isOneClick;
     private bool isCanClick = false;
     public static bool isGunPowder = false;
@@ -50,18 +50,17 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(ExplanText.text == tempChar && isOneClick)
+        if (Option != OptionType.nonCheck && isOneClick)
         {
             Buff(Option);
             anotherOption.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InQuad);
 
-            transform.GetComponent<RectTransform>().DOAnchorPosX(0, 1.5f).SetEase(Ease.OutQuad).OnComplete(() => 
+            transform.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1.5f).SetEase(Ease.OutQuad).OnComplete(() => 
             {
                 Supplies.endSupplies.Invoke();
             });
-        }
-        else
-        {
+
+            Option = OptionType.nonCheck;
             isOneClick = false;
         }
 
@@ -69,7 +68,6 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         {
             ExplanText.text = optionExplan[(int)Option];
             isOneClick = true;
-            tempChar = ExplanText.text;
         }
     }
 
@@ -88,7 +86,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         switch (supplies)
         {
             case OptionType.BulletCountUP:
-                Arrow.Instance.shootAmount += 5;
+                Arrow.Instance.shootAmount += 3;
                 break;
             case OptionType.BulletDmgUP:
                 Arrow.Instance.BulletDmg += 10;
@@ -126,7 +124,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         optionNameList[4] = "수류탄";
         optionNameList[5] = "화약탄";
 
-        optionExplan[0] = "발사하는 탄환의 수를 5 높인다.";
+        optionExplan[0] = "발사하는 탄환의 수를 3 높인다.";
         optionExplan[1] = "탄환의 데미지를 10 상승시킨다.";
         optionExplan[2] = "체력을 50 회복한다.";
         optionExplan[3] = "최대체력을 10 상승시킨다.";

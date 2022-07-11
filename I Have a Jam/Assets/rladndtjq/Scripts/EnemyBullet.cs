@@ -7,12 +7,12 @@ public class EnemyBullet : MonoBehaviour
     public GameObject particle;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-        Instantiate(particle,collision.transform.position,Quaternion.identity);
-        SoundManager.Instance.PlaySound(SoundEffect.P_Hit);
-        collision.gameObject.GetComponentInChildren<Arrow>().currentHp -= 20;
-        Destroy(this.gameObject);
+            Instantiate(particle, collision.transform.position, Quaternion.identity);
+            SoundManager.Instance.PlaySound(SoundEffect.P_Hit);
+            collision.gameObject.GetComponentInChildren<Arrow>().currentHp -= 20;
+            Destroy(this.gameObject);
 
         }
     }

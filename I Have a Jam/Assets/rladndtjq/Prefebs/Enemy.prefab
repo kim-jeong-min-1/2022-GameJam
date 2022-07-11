@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2582125306895345241}
   - component: {fileID: 7829356194218795961}
   - component: {fileID: 3994052293397922510}
+  - component: {fileID: 3656283307417593341}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -150,6 +151,7 @@ MonoBehaviour:
   currentHp: 0
   Enemytype: 0
   EnemyBullet: {fileID: 6146376145802388835, guid: 3de9c08531920154ba72066635d7788e, type: 3}
+  isFire: 0
 --- !u!95 &3994052293397922510
 Animator:
   serializedVersion: 3
@@ -169,6 +171,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!210 &3656283307417593341
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845920633819997205}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
 --- !u!1 &8378878506549592748
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,6 +193,7 @@ GameObject:
   - component: {fileID: 1027972678114567536}
   - component: {fileID: 5073988503675541031}
   - component: {fileID: 2076363800940664152}
+  - component: {fileID: 400530947505495605}
   m_Layer: 8
   m_Name: Hp
   m_TagString: Untagged
@@ -264,3 +278,14 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190335
+--- !u!210 &400530947505495605
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8378878506549592748}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2

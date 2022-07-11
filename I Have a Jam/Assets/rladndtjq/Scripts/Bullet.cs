@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] GameObject GranadeEffect;
     [SerializeField] GameObject HitEffect;
 
-    [HideInInspector] public int bulletType;
+    public int bulletType;
 
     Rigidbody2D rb;
     GameObject Player;
@@ -109,6 +109,7 @@ public class Bullet : MonoBehaviour
     {
         canShoot = true;
         isGranadeBomb = false;
+        bulletType = 0;
         Arrow.Instance.shootBack++;
         bound = boundAmount;
         ObjectPool.ReturnObject(this.gameObject);

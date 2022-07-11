@@ -111,7 +111,7 @@ public class Arrow : MonoBehaviour
             if(shootCount < granadeBulletAmount)
                 bullet.GetComponent<Bullet>().bulletType = (int)BulletType.Granade;   
 
-            bullet.transform.position = new Vector3(spawnPosition.x,spawnPosition.y + 0.5f, 0);
+            bullet.transform.position = new Vector3(spawnPosition.x,spawnPosition.y, 0);
             shootCount++;
             
             yield return new WaitForSeconds(0.1f);

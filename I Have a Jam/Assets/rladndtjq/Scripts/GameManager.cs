@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
-    public Dictionary<Vector2, GameObject> objectInTile = new Dictionary<Vector2, GameObject>();
-    public Vector2[,] tile = new Vector2[11, 8];
+    public Dictionary<int, GameObject> objectInTile = new Dictionary<int, GameObject>();
+    public Vector2[] tilePos = new Vector2[54];
     public static GameManager instance;
     [HideInInspector]
     public bool isShootEnd = false;
@@ -38,12 +39,12 @@ public class GameManager : MonoBehaviour
         else
             Destroy(this);
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < 6; j++)
             {
-                tile[i, j] = new Vector2(-2.3f + j * 0.876f, 4f - i * 0.850f);
-                objectInTile.Add(tile[i, j], null);
+                tilePos[i * 6 + j] = new Vector2(-2.25f + j * 0.86f, 4f - i * 0.850f);
+                objectInTile.Add(i * 6 + j, null);
             }
         }
 
@@ -64,41 +65,59 @@ public class GameManager : MonoBehaviour
 
     IEnumerator turnCycle()
     {
+        bool isWait = false;
         yield return new WaitForSeconds(0.3f);
 
-        for (int i = 0; i < 6; i++) //좀비 다 내려왔을때
+        for (int x = 0; x < 6; x++) //좀비 다 내려왔을때
         {
-            if (objectInTile[tile[8, i]] != null)
+            if (objectInTile[x + 48] != null)
             {
-                objectInTile[tile[8, i]].GetComponent<Enemy>().Attack();
-                Arrow.Instance.currentHp -= 10;
-            }
-        }
-        for (int y = 9; y > -1; y--)
-        {
-            for (int x = 5; x > -1; x--)
-            {
-                if (objectInTile[tile[y, x]] != null)
+                if (objectInTile[x + 48].activeSelf) //좀비 죽었을때
                 {
-                    if (!objectInTile[tile[y, x]].activeSelf) //좀비 죽었을때
+                    isWait = objectInTile[x + 48].TryGetComponent(out Enemy enemy);
+                    if (isWait)
                     {
-                        objectInTile[tile[y, x]] = null;
-                    }
-                    else // 좀비 한칸 내려가기
-                    {
-                        objectInTile[tile[y, x]].GetComponent<SpriteRenderer>().sortingOrder = y + 2;
-                        if (objectInTile[tile[y, x]].CompareTag("Enemy"))
-                        {
-                            objectInTile[tile[y, x]].transform.Find("Hp").GetComponent<MeshRenderer>().sortingOrder = y + 3;
-                        }
-                        objectInTile[tile[y, x]].transform.DOMove(new Vector3(objectInTile[tile[y, x]].transform.position.x, objectInTile[tile[y, x]].transform.position.y - 0.850f, 0), 0.8f).SetEase(Ease.InOutQuad);
-                        objectInTile[tile[y + 1, x]] = objectInTile[tile[y, x]];
-                        objectInTile[tile[y, x]] = null;
+                        enemy.StopCoroutine(enemy.Attack());
+                        enemy.StartCoroutine(enemy.Attack());
+                        Arrow.Instance.currentHp -= 10;
                     }
                 }
             }
         }
-        yield return new WaitForSeconds(1.3f);
+
+        if (isWait)
+        {
+            yield return new WaitForSeconds(1.0f);
+            isWait = false;
+        }
+
+        for (int xy = 53; xy > -1; xy--)
+        {
+            if (objectInTile[xy] != null)
+            {
+                if (!objectInTile[xy].activeSelf) //좀비 죽었을때
+                {
+                    objectInTile[xy] = null;
+                    isWait = true;
+                }
+                else // 좀비 한칸 내려가기
+                {
+                    objectInTile[xy].GetComponent<SortingGroup>().sortingOrder = (int)Mathf.FloorToInt(xy / 6) + 3;
+                    if (objectInTile[xy].CompareTag("Enemy"))
+                        objectInTile[xy].transform.Find("Hp").GetComponent<SortingGroup>().sortingOrder = (int)Mathf.FloorToInt(xy / 6) + 5;
+                    objectInTile[xy].transform.DOMove(new Vector3(objectInTile[xy].transform.position.x, objectInTile[xy].transform.position.y - 0.850f, 0), 0.8f).SetEase(Ease.InOutQuad);
+                    objectInTile[xy + 6] = objectInTile[xy];
+                    objectInTile[xy] = null;
+                    isWait = true;
+                }
+            }
+
+        }
+        if (isWait)
+        {
+            yield return new WaitForSeconds(0.5f);
+            isWait = false;
+        }
 
         int spawnPosX;
         float spawnAmount = Random.Range(1, 5.5f);
@@ -108,7 +127,7 @@ public class GameManager : MonoBehaviour
         {
             randomType = Random.Range(1, 100);
             spawnPosX = Random.Range(1, 5);
-            if (objectInTile[tile[0, spawnPosX]] == null)
+            if (objectInTile[spawnPosX] == null)
             {
                 var enemy = ObjectPool.GetObject(ObjectPool.instance.prefebs[1], null);
 
@@ -119,16 +138,18 @@ public class GameManager : MonoBehaviour
                 else if (randomType > 85 && randomType <= 100)
                     enemy.GetComponent<Enemy>().Enemytype = (int)EnemyType.Miner;
 
-                objectInTile[tile[0, spawnPosX]] = enemy;
-                enemy.transform.position = new Vector2(tile[0, spawnPosX].x, tile[0, spawnPosX].y + 3);
-                enemy.transform.DOMove(tile[0, spawnPosX], 1.0f).SetEase(Ease.OutBounce);
+                enemy.transform.position = new Vector2(tilePos[spawnPosX].x, tilePos[spawnPosX].y + 3);
+                enemy.GetComponent<SortingGroup>().sortingOrder = 2;
+                enemy.transform.Find("Hp").GetComponent<SortingGroup>().sortingOrder = 4;
+                enemy.transform.DOMove(tilePos[spawnPosX], 1.0f).SetEase(Ease.OutBounce);
+                objectInTile[spawnPosX] = enemy;
             }
-
             yield return new WaitForSeconds(0.1f);
         }
+
         randomType = Random.Range(0, 2);
-        spawnPosX = Random.Range(1, 5);
-        if (objectInTile[tile[0, spawnPosX]] == null)
+        spawnPosX = Random.Range(0, 5);
+        if (objectInTile[spawnPosX] == null)
         {
             GameObject Item;
             if (randomType == 0)
@@ -142,62 +163,68 @@ public class GameManager : MonoBehaviour
                 Item.GetComponent<Item>().item = (int)ItemType.bullet;
             }
 
-            objectInTile[tile[0, spawnPosX]] = Item;
-            Item.transform.position = new Vector2(tile[0, spawnPosX].x, tile[0, spawnPosX].y + 3);
-            Item.transform.DOMove(tile[0, spawnPosX], 1.0f).SetEase(Ease.OutBounce);
+            objectInTile[spawnPosX] = Item;
+            Item.transform.position = new Vector2(tilePos[spawnPosX].x, tilePos[spawnPosX].y + 3);
+            Item.transform.DOMove(tilePos[spawnPosX], 1.0f).SetEase(Ease.OutBounce);
         }
 
+        spawnPosX = Random.Range(0, 5);
         if (turn % 5 == 0)
         {
-            for (int i = 0; i < 5; i++)
+            if (objectInTile[spawnPosX] != null)
             {
-                if (objectInTile[tile[0, i]] == null)
-                {
-                    var Box = Instantiate(box);
-                    Box.transform.position = tile[0, i];
-                    objectInTile[tile[0, i]] = Box;
-                    break;
-                }
+                if (objectInTile[spawnPosX].TryGetComponent(out Enemy enemy))
+                    enemy.currentHp = 0;
+                else if (objectInTile[spawnPosX].TryGetComponent(out Item item))
+                    ObjectPool.ReturnObject(item.gameObject);
             }
+            var Box = Instantiate(box);
+            Box.transform.position = new Vector2(tilePos[spawnPosX].x, tilePos[spawnPosX].y + 3);
+            Box.transform.DOMove(tilePos[spawnPosX], 1.0f).SetEase(Ease.OutBounce);
+            objectInTile[spawnPosX] = Box;
         }
         yield return new WaitForSeconds(1.3f);
 
 
-        for (int y = 9; y > 0; y--)
+        for (int y = 8; y > 0; y--)
         {
             for (int x = 5; x > -1; x--)
             {
-                if (objectInTile[tile[y, x]] != null)
+                if (objectInTile[y * 6 + x] != null)
                 {
-                    if (objectInTile[tile[y, x]].CompareTag("Enemy"))
+                    if (objectInTile[y * 6 + x].TryGetComponent(out Enemy enemy))
                     {
-                        if (objectInTile[tile[y, x]].GetComponent<Enemy>().Enemytype == (int)EnemyType.Plague)
+                        if (enemy.Enemytype == (int)EnemyType.Plague)
                         {
-                            objectInTile[tile[y, x]].GetComponent<Enemy>().Shoot();
+                            objectInTile[y * 6 + x].GetComponent<Enemy>().Shoot();
                             SoundManager.Instance.PlaySound(SoundEffect.Wow);
                         }
-                        else if (objectInTile[tile[y, x]].GetComponent<Enemy>().Enemytype == (int)EnemyType.Miner)
+                        else if (enemy.Enemytype == (int)EnemyType.Miner)
                         {
-                            Vector2 randomPos;
-                            int posx, posy;
+                            int posX, posY;
                             do
                             {
-                                randomPos = new Vector2(Mathf.Clamp(Random.Range(x - 3, x + 3), 0, 5), Mathf.Clamp(Random.Range(y - 3, y + 3), 1, 8));
-                                posx = (int)randomPos.x;
-                                posy = (int)randomPos.y;
-                                Debug.Log(posx + "/" + posx);
-                            } while (objectInTile[tile[posy, posx]] != null);
-                            Debug.Log("moveto : " + tile[posy, posx]);
-                            objectInTile[tile[y, x]].transform.position = tile[posy, posx];
-                            objectInTile[tile[posy, posx]] = objectInTile[tile[y, x]];
-                            objectInTile[tile[y, x]] = null;
+                                posX = Mathf.Clamp(x + Random.Range(-5, 5), 0, 5);
+                                posY = Mathf.Clamp(y + Random.Range(-5, 5), 1, 8);
+                            } while (objectInTile[posY * 6 + posX] != null);
+                            objectInTile[y * 6 + x].transform.position = tilePos[posY * 6 + posX];
+                            objectInTile[posY * 6 + posX] = objectInTile[y * 6 + x];
+                            objectInTile[y * 6 + x] = null;
+                            enemy.GetComponent<SortingGroup>().sortingOrder = posY + 3;
+                            enemy.transform.Find("Hp").GetComponent<SortingGroup>().sortingOrder = posY + 5;
                             SoundManager.Instance.PlaySound(SoundEffect.Mining);
                         }
                     }
+                    isWait = true;
                 }
             }
+
         }
-        yield return new WaitForSeconds(1f);
+        if (isWait)
+        {
+            yield return new WaitForSeconds(1f);
+            isWait = false;
+        }
 
         if (isBreakSupplies)
         {

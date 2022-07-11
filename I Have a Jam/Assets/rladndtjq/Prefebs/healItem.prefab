@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3349888021644770188}
   - component: {fileID: 3038938496388331492}
   - component: {fileID: 4260997028494815832}
+  - component: {fileID: -4720940507108055156}
   m_Layer: 13
   m_Name: healItem
   m_TagString: Untagged
@@ -97,10 +98,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.13, y: -0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.26900148, y: 0.94536287}
     oldSize: {x: 0.61, y: 0.66}
     newSize: {x: 0.61, y: 0.66}
     adaptiveTilingThreshold: 0.5
@@ -123,3 +124,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: 0
+--- !u!210 &-4720940507108055156
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676028510956903408}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
