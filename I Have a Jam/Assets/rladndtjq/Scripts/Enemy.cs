@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public int Enemytype;
     [SerializeField] GameObject EnemyBullet;
 
+    public bool isFire = false;
     TextMesh hptext;
     Animator animator;
     void Start()
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour
             currentHp = Hp + (100 * ((int)(GameManager.instance.turn / 5) + 1));
             GameManager.instance.EnemyKillCount++;
             GameManager.instance.EnemyKillCount2[Enemytype]++;
+            GameManager.instance.Score += 100;
             ObjectPool.ReturnObject(this.gameObject);
         }
     }
