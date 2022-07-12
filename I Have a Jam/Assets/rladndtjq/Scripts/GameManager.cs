@@ -213,7 +213,6 @@ public class GameManager : MonoBehaviour
                             enemy.GetComponent<SortingGroup>().sortingOrder = posY + 3;
                             enemy.transform.Find("Hp").GetComponent<SortingGroup>().sortingOrder = posY + 5;
                             SoundManager.Instance.PlaySound(SoundEffect.Mining);
-                            isWait = true;
                         }
                     }
                 }
