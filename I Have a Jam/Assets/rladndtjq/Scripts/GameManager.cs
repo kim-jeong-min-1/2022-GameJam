@@ -90,40 +90,12 @@ public class GameManager : MonoBehaviour
             isWait = false;
         }
 
-        Debug.Log("for start");
         for (int xy = 53; xy > -1; xy--)
         {
             if (objectInTile[xy] != null)
             {
-                Debug.Log(xy + " is not empty");
                 if (objectInTile[xy].activeSelf == false) //죽었을때
                 {
-                    Debug.Log(xy + " is dead");
-                    if (objectInTile[xy].TryGetComponent(out Enemy enemy) && enemy.isFire == true)
-                    {
-                        Debug.Log(xy + "is enemy");
-                        if (xy <= 47 && objectInTile[xy + 6].TryGetComponent(out Enemy enemyPY))
-                        {
-                            enemyPY.currentHp -= 10;
-                            Debug.Log(xy + 6 + "'s hp - 10");
-                        }
-                        if (xy >= 6 && objectInTile[xy - 6].TryGetComponent(out Enemy enemyMY))
-                        {
-                            enemyMY.currentHp -= 10;
-                            Debug.Log(xy - 6 + "'s hp - 10");
-                        }
-                        if ((int)Mathf.FloorToInt(xy / 6) != (int)Mathf.FloorToInt((xy + 1) / 6) && objectInTile[xy + 1].TryGetComponent(out Enemy enemyPX))
-                        {
-                            enemyPX.currentHp -= 10;
-                            Debug.Log(xy + 1 + "'s hp - 10");
-                        }
-                        if ((int)Mathf.FloorToInt(xy / 6) != (int)Mathf.FloorToInt((xy - 1) / 6) && objectInTile[xy - 1].TryGetComponent(out Enemy enemyMX))
-                        {
-                            enemyMX.currentHp -= 10;
-                            Debug.Log(xy - 1 + "'s hp - 10");
-                        }
-                        enemy.isFire = false;
-                    }
                     objectInTile[xy] = null;
                     isWait = true;
                 }

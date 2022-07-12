@@ -94,7 +94,7 @@ public class Bullet : MonoBehaviour
         {
             if (Arrow.Instance.shootBack == 1)
             {
-                Player.transform.DOMove(new Vector3(transform.position.x, Player.transform.position.y, 0), 1f).SetEase(Ease.InOutSine);
+                Player.transform.DOMove(new Vector3(Mathf.Clamp(transform.position.x,-2.5f,2.5f), Player.transform.position.y, 0), 1f).SetEase(Ease.InOutSine);
             }
             disable();
         }

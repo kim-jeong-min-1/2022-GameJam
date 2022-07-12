@@ -29,7 +29,8 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     [HideInInspector]
     public bool isOneclick = false;
-    private bool isCanClick = false;
+    [HideInInspector]
+    public bool isCanClick = false;
     public static bool isGunPowder = false;
 
     private void Start()
@@ -51,24 +52,19 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     public void OnPointerClick(PointerEventData eventData)
     {
+
         if (Option != OptionType.nonCheck && isOneclick)
         {
-            Buff(Option);
-            anotherOption.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InQuad);
-
-            transform.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1.5f).SetEase(Ease.OutQuad).OnComplete(() => 
-            {
-                Supplies.endSupplies.Invoke();
-            });
-
-            Option = OptionType.nonCheck;
+            StopCoroutine(Choose());
+            StartCoroutine(Choose());
         }
-
-        if (isCanClick)
+        if (isCanClick) 
         {
             ExplanText.text = optionExplan[(int)Option];
+            anotherOption.GetComponent<SuppliesOption>().isOneclick = false;
             isOneclick = true;
         }
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -134,5 +130,17 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
     void CanClick()
     {
         isCanClick = true;
+    }
+
+    IEnumerator Choose()
+    {
+        Buff(Option);
+        anotherOption.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InQuad);
+
+        Option = OptionType.nonCheck;
+        anotherOption.GetComponent<SuppliesOption>().Option = OptionType.nonCheck;
+        gameObject.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1.5f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(1.6f);
+        Supplies.endSupplies();
     }
 }

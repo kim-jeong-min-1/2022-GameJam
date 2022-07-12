@@ -13,13 +13,12 @@ public class Supplies : MonoBehaviour
     [SerializeField] private GameObject Options;
     [SerializeField] private GameObject SuppliesObj;
     private Animator anim => GetComponent<Animator>();
-
     private int[] OptionNumber = new int[2];
 
     private void Start()
     {
-        endSupplies += () => { Options.SetActive(false); };
-        endSupplies += () => { anim.SetBool("isEnd", true); };
+        endSupplies += () => Options.SetActive(false);
+        endSupplies += () => anim.SetBool("isEnd", true);
     }
 
     public void StartSupplies()
@@ -32,7 +31,10 @@ public class Supplies : MonoBehaviour
         for (int i = 0; i < Option.Count; i++)
         {
             Option[i].GetComponent<SuppliesOption>().isOneclick = false;
+            Option[i].GetComponent<SuppliesOption>().isCanClick = false;
         }
+        endSupplies -= () => Options.SetActive(false);
+        endSupplies -= () => anim.SetBool("isEnd", true);
         SuppliesObj.SetActive(false);
     }
 

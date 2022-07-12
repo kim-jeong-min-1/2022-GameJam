@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject EnemyBullet;
     [SerializeField] GameObject bloodParticle;
     [SerializeField] GameObject FireEffect;
-
+    Vector2 enemyPosition;
     public bool isFire = false;
     TextMesh hptext;
     Animator animator;
@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        enemyPosition = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.35f);
         animator.SetInteger("Type", Enemytype);
 
         hptext.text = currentHp.ToString();
@@ -41,6 +42,15 @@ public class Enemy : MonoBehaviour
             if (isFire)
             {
                 Instantiate(FireEffect, transform.position, Quaternion.identity);
+                RaycastHit2D[] horizontalHit = Physics2D.LinecastAll(new Vector2(enemyPosition.x - 0.85f, enemyPosition.y), new Vector2(enemyPosition.x + 0.85f, enemyPosition.y), LayerMask.GetMask("Enemy"));
+                RaycastHit2D[] verticalHit = Physics2D.LinecastAll(new Vector2(enemyPosition.x, enemyPosition.y - 0.85f), new Vector2(enemyPosition.x, enemyPosition.y + 0.85f), LayerMask.GetMask("Enemy"));
+
+                foreach (RaycastHit2D hit in horizontalHit)
+                    hit.collider.GetComponent<Enemy>().currentHp -= 10;
+
+                foreach (RaycastHit2D hit in verticalHit)
+                    hit.collider.GetComponent<Enemy>().currentHp -= 10;
+                isFire = false;
             }
             GameManager.instance.EnemyKillCount++;
             GameManager.instance.EnemyKillCount2[Enemytype]++;
@@ -80,5 +90,15 @@ public class Enemy : MonoBehaviour
         else
             animator.Play("Worker-hit");
         SoundManager.Instance.PlaySound(SoundEffect.E_Hit);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (isFire)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(new Vector2(enemyPosition.x - 0.85f, enemyPosition.y), new Vector2(enemyPosition.x + 0.85f, enemyPosition.y));
+            Gizmos.DrawLine(new Vector2(enemyPosition.x, enemyPosition.y - 0.85f), new Vector2(enemyPosition.x, enemyPosition.y + 0.85f));
+        }
     }
 }
