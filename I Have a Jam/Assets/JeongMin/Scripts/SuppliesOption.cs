@@ -55,8 +55,9 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
         if (Option != OptionType.nonCheck && isOneclick)
         {
-            StopCoroutine(Choose());
+            //StopCoroutine(Choose());
             StartCoroutine(Choose());
+            isOneclick = false;
         }
         if (isCanClick) 
         {
@@ -140,7 +141,7 @@ public class SuppliesOption : MonoBehaviour, IPointerClickHandler, IPointerEnter
         Option = OptionType.nonCheck;
         anotherOption.GetComponent<SuppliesOption>().Option = OptionType.nonCheck;
         gameObject.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1.5f).SetEase(Ease.OutQuad);
-        yield return new WaitForSeconds(1.6f);
+        yield return new WaitForSeconds(1.5f);
         Supplies.endSupplies();
     }
 }
